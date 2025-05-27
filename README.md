@@ -16,8 +16,29 @@ This repository provides ROS2 integration for Vicon motion capture systems, enab
 2. **Cyclone DDS Configuration:**  
     Edit the `cyclone_dds_config.xml` file to set the correct IP address for your network interface. This is essential for proper data transmission between nodes.
 
-3. **Launching the Node:**  
-    After configuring the network and DDS, launch the ViconROS node to start receiving and publishing Vicon data.
+## Running the ViconROS Node
+
+You can build and launch the ViconROS node using VS Code tasks for a streamlined workflow.
+
+### 1. Build the Workspace
+
+Use the `ROS2Build` task to build all packages in your workspace:
+
+1. Open the Command Palette (`Ctrl+Shift+P`).
+2. Select **Tasks: Run Task**.
+3. Choose **ROS2Build**.
+
+This will compile all ROS2 packages, including ViconROS.
+
+### 2. Launch the Vicon Node
+
+After building, use the `ROS2Launch` task to start the Vicon node:
+
+1. Open the Command Palette (`Ctrl+Shift+P`).
+2. Select **Tasks: Run Task**.
+3. Choose **ROS2Launch**.
+
+This will launch the ViconROS node and begin publishing motion capture data as ROS2 topics.
 
 ## Documentation
 
