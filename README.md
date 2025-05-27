@@ -16,6 +16,10 @@ This repository provides ROS2 integration for Vicon motion capture systems, enab
 2. **Cyclone DDS Configuration:**  
     Edit the `cyclone_dds_config.xml` file to set the correct IP address for your network interface. This is essential for proper data transmission between nodes.
 
+3. **Download the Vicon DataStream SDK:**  
+    Visit the [Vicon DataStream SDK download page](https://www.vicon.com/software/datastream-sdk/) and download the latest version for Linux.  
+    Extract the archive and move the `Linux64` folder into your workspace directory at `/home/vscode/workspace`.
+
 ## Running the ViconROS Node
 
 You can build and launch the ViconROS node using VS Code tasks for a streamlined workflow.
