@@ -25,6 +25,8 @@
 		"--privileged",
 		"--network=host"
 	],
+	// Run command after container starts
+	"postStartCommand": "ros2 daemon start",
 	// Configure VS Code extensions
 	"customizations": {
 		"vscode": {
