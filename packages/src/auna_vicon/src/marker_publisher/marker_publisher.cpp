@@ -7,7 +7,7 @@ ViconMarkerNode::ViconMarkerNode()
   marker_pub_ = this->create_publisher<geometry_msgs::msg::PoseArray>("vicon_markers", 10);
 
   // Connect to the Vicon Tracker server
-  std::string host = "192.168.10.1:801"; // Replace with your actual Vicon IP address
+  std::string host = "localhost:801"; // Replace with your actual Vicon IP address
   if (client_.Connect(host).Result != ViconDataStreamSDK::CPP::Result::Success) {
     RCLCPP_ERROR(this->get_logger(), "Failed to connect to Vicon DataStream: %s", host.c_str());
     rclcpp::shutdown();
