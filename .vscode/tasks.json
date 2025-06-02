@@ -25,14 +25,6 @@
                 "isDefault": false
             }
         },
-        // ------------------- BUILD GPS_PUBLISHER -------------------
-        {
-            "label": "Build gps_publisher",
-            "type": "shell",
-            "command": "cd packages && colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && mv build/compile_commands.json ..",
-            "group": "build",
-            "problemMatcher": []
-        },
         // ------------------- LAUNCH GPS_PUBLISHER -------------------
         {
             "label": "Launch gps_publisher",

@@ -4,6 +4,7 @@
 #include "/home/vscode/workspace/Linux64/DataStreamClient.h"
 #include <string>
 #include <memory>
+#include <unordered_map>
 
 class GpsPublisher : public rclcpp::Node {
 public:
@@ -13,10 +14,10 @@ public:
 private:
   void timer_callback();
   void connect_to_vicon();
-//   void publish_gps(const std::string &subject_name, const ViconDataStreamSDK::CPP::Output_GetGlobalTranslation &translation);
+  void publish_gps(const std::string &subject_name, const std::string &root_segment_name, const ViconDataStreamSDK::CPP::Output_GetSegmentGlobalTranslation &translation);
 
   std::unique_ptr<ViconDataStreamSDK::CPP::Client> vicon_client_;
-  rclcpp::Publisher<sensor_msgs::msg::NavSatFix>::SharedPtr gps_pub_;
   rclcpp::TimerBase::SharedPtr timer_;
   bool connected_ = false;
+  std::unordered_map<std::string, rclcpp::Publisher<sensor_msgs::msg::NavSatFix>::SharedPtr> subject_publishers_;
 };
