@@ -6,7 +6,7 @@ find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
-set(VICON_SDK_DIR "/home/vscode/workspace/Linux64")
+set(VICON_SDK_DIR "/home/ubuntu/vicon/Linux64")
 
 include_directories(
   include

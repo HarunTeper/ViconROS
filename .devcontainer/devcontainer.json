@@ -1,32 +1,20 @@
 // For format details, see https://aka.ms/devcontainer.json.
 {
 	// Configure container
-	"name": "AuNa",
-	"build": {
-		"context": "..",
-		"dockerfile": "Dockerfile",
-		"args": {
-			"VARIANT": "jammy",
-			"INSTALL_ROS2": "true",
-			"INSTALL_GAZEBO": "true",
-			"INSTALL_ROS2_TRACING": "true",
-			"ROS_DOMAIN_ID": "0",
-			"ROS_LOCALHOST_ONLY": "0",
-			"DISPLAY": "${localEnv:DISPLAY}"
-		}
-	},
-	// Configure container user
-	"remoteUser": "vscode",
-	// Configure workspace mount point
-	"workspaceMount": "source=${localWorkspaceFolder},target=/home/vscode/workspace,type=bind,consistency=cached",
-	"workspaceFolder": "/home/vscode/workspace",
-	// Configure runtime settings
-	"runArgs": [
-		"--privileged",
-		"--network=host"
+	"name": "PhoenixRacing",
+	"dockerComposeFile": [
+		"../docker-compose.yml"
 	],
-	// Run command after container starts
-	"postStartCommand": "ros2 daemon start",
+	"service": "development",
+	"runServices": [
+		"development"
+	],
+	// Configure container user
+	"remoteUser": "ubuntu",
+	// Configure workspace mount point
+	"workspaceFolder": "/home/ubuntu/workspace",
+	//Initialize command:
+	"initializeCommand": "docker compose build base",
 	// Configure VS Code extensions
 	"customizations": {
 		"vscode": {
@@ -38,10 +26,17 @@
 				"donjayamanne.python-extension-pack",
 				"donjayamanne.python-environment-manager",
 				"ms-azuretools.vscode-docker",
+				"p1c2u.docker-compose",
 				"ms-python.autopep8",
+				"ms-vscode.cpptools",
+				"ms-vscode.cpptools-extension-pack",
 				"GitHub.copilot",
-				"GitHub.copilot-chat"
+				"GitHub.copilot-chat",
+				"mechatroner.rainbow-csv"
 			]
 		}
+	},
+	"containerEnv": {
+		"SHELL": "/bin/bash"
 	}
 }

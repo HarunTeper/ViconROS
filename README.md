@@ -18,7 +18,7 @@ This repository provides ROS2 integration for Vicon motion capture systems, enab
 
 3. **Download the Vicon DataStream SDK:**  
     Visit the [Vicon DataStream SDK download page](https://www.vicon.com/software/datastream-sdk/) and download the latest version for Linux.  
-    Extract the archive and move the `Linux64` folder into your workspace directory at `/home/vscode/workspace`.
+    Extract the archive and move the `Linux64` folder into your workspace directory at `/home/ubuntu/workspace`.
 
 ## Running the ViconROS Node
 

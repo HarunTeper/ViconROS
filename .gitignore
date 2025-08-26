@@ -7,4 +7,6 @@ log
 .idea
 *venv
 
+**/__pycache__/*
+
 Linux64

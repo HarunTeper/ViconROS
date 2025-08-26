@@ -1,0 +1,111 @@
+---
+#------------------------------------------------------------------------------
+# EXTENSION DEFINITIONS
+#------------------------------------------------------------------------------
+x-common-base: &common-base
+  privileged: true
+  network_mode: host
+  env_file:
+    - .env
+  stdin_open: true
+  tty: true
+  pull_policy: build
+
+x-build-package-base: &build-package-base
+  context: .
+  dockerfile: dockerfiles/package.dockerfile
+  target: runtime
+  args:
+    PIP_BREAK_SYSTEM_PACKAGES: ${PIP_BREAK_SYSTEM_PACKAGES}
+
+x-package-base: &package-base
+  <<: *common-base
+  build:
+    <<: *build-package-base
+  volumes:
+    - ./packages/src:/home/ubuntu/workspace/packages/src:cached
+
+services:
+  #==============================================================================
+  # BASE SERVICE
+  #==============================================================================
+  # Minimal base image without ROS packages - used for building other images
+  base:
+    build:
+      context: .
+      dockerfile: dockerfiles/base.dockerfile
+      args:
+        - PIP_BREAK_SYSTEM_PACKAGES=${PIP_BREAK_SYSTEM_PACKAGES}
+        - HOST_UID=${HOST_UID}
+        - HOST_GID=${HOST_GID}
+        - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    image: base:latest
+    pull_policy: build
+    env_file:
+      - .env
+    profiles: [ "base" ]
+
+  #==============================================================================
+  # CORE NETWORK SERVICES
+  #==============================================================================
+
+  # Zenohd - distributed data exchange service
+  zenohd:
+    <<: *package-base
+    image: zenohd:latest
+    pull_policy: build
+    container_name: zenohd
+    environment:
+      - ZENOH_SESSION_CONFIG_URI=/home/ubuntu/zenoh_config.json5
+    volumes:
+      - /home/vicon/workspace/ViconROS/zenoh_config.json5:/home/ubuntu/zenoh_config.json5:ro
+    command: [ "ros2", "run", "rmw_zenoh_cpp", "rmw_zenohd" ]
+    profiles: [ "zenohd", "vicon" ]
+
+  #==============================================================================
+  # Vicon SERVICES
+  #==============================================================================
+
+  marker_publisher:
+    <<: *physical-base
+    build:
+      <<: *build-package-base
+      target: runtime
+      args:
+        - PIP_BREAK_SYSTEM_PACKAGES=${PIP_BREAK_SYSTEM_PACKAGES}
+        - PACKAGE_NAMES=auna_vicon
+    image: marker_publisher:latest
+    pull_policy: build
+    container_name: marker_publisher
+    command: [ "/bin/bash", "-c", "ros2 launch auna_vicon marker_publisher_main.launch.py" ]
+    profiles: [ "vicon" ]
+
+  #==============================================================================
+  # DEMO SERVICES
+  #==============================================================================
+
+  talker:
+    <<: *package-base
+    build:
+      <<: *build-package-base
+      args:
+        - PIP_BREAK_SYSTEM_PACKAGES=${PIP_BREAK_SYSTEM_PACKAGES}
+        - INSTALL_PACKAGE_NAMES=${DEMO_PACKAGES}
+    image: talker:latest
+    pull_policy: build
+    container_name: talker
+    command: [ "ros2", "run", "demo_nodes_cpp", "talker" ]
+    profiles: [ "talker" ]
+
+  listener:
+    <<: *package-base
+    build:
+      <<: *build-package-base
+      args:
+        - PIP_BREAK_SYSTEM_PACKAGES=${PIP_BREAK_SYSTEM_PACKAGES}
+        - INSTALL_PACKAGE_NAMES=${DEMO_PACKAGES}
+    image: listener:latest
+    pull_policy: build
+    container_name: listener
+    command: [ "ros2", "run", "demo_nodes_cpp", "listener" ]
+    profiles: [ "listener" ]
