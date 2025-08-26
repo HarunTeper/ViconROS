@@ -67,7 +67,7 @@ services:
   #==============================================================================
 
   marker_publisher:
-    <<: *physical-base
+    <<: *package-base
     build:
       <<: *build-package-base
       target: runtime
