@@ -37,14 +37,7 @@ def generate_launch_description():
         }],
         arguments=['--ros-args', '--log-level', LaunchConfiguration('log_level')],
         output='screen',
-        emulate_tty=True,
-        # **PERFORMANCE OPTIMIZATION: Set real-time scheduling priority**
-        # additional_env={
-        #     'RCUTILS_LOGGING_USE_STDOUT': '1',
-        #     'RCUTILS_COLORIZED_OUTPUT': '1',
-        # },
-        # # Set high priority for real-time performance
-        # prefix=['nice', '-10'],  # High priority (requires sudo for RT priority)
+        emulate_tty=True
     )
     
     return LaunchDescription([

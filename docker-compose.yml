@@ -25,6 +25,17 @@ x-package-base: &package-base
   volumes:
     - ./packages/src:/home/ubuntu/workspace/packages/src:cached
 
+x-vicon-service-base: &vicon-service-base
+  <<: *package-base
+  build:
+    <<: *build-package-base
+    target: runtime
+    args:
+      - PIP_BREAK_SYSTEM_PACKAGES=${PIP_BREAK_SYSTEM_PACKAGES}
+      - PACKAGE_NAMES=auna_vicon
+  pull_policy: build
+  profiles: [ "vicon" ]
+
 services:
   #==============================================================================
   # BASE SERVICE
@@ -67,18 +78,22 @@ services:
   #==============================================================================
 
   marker_publisher:
-    <<: *package-base
-    build:
-      <<: *build-package-base
-      target: runtime
-      args:
-        - PIP_BREAK_SYSTEM_PACKAGES=${PIP_BREAK_SYSTEM_PACKAGES}
-        - PACKAGE_NAMES=auna_vicon
+    <<: *vicon-service-base
     image: marker_publisher:latest
-    pull_policy: build
     container_name: marker_publisher
     command: [ "/bin/bash", "-c", "ros2 launch auna_vicon marker_publisher_main.launch.py" ]
-    profiles: [ "vicon" ]
+
+  odom_publisher:
+    <<: *vicon-service-base
+    image: odom_publisher:latest
+    container_name: odom_publisher
+    command: [ "/bin/bash", "-c", "ros2 launch auna_vicon odom_publisher.launch.py" ]
+
+  gps_publisher:
+    <<: *vicon-service-base
+    image: gps_publisher:latest
+    container_name: gps_publisher
+    command: [ "/bin/bash", "-c", "ros2 launch auna_vicon gps_publisher.launch.py" ]
 
   #==============================================================================
   # DEMO SERVICES

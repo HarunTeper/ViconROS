@@ -1,23 +1,25 @@
-#pragma once
+#ifndef GPS_PUBLISHER_HPP_
+#define GPS_PUBLISHER_HPP_
+
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/nav_sat_fix.hpp>
-#include "/home/ubuntu/vicon/Linux64/DataStreamClient.h"
+#include "DataStreamClient.h"
 #include <string>
-#include <memory>
-#include <unordered_map>
+#include <map>
 
-class GpsPublisher : public rclcpp::Node {
+class GpsPublisherNode : public rclcpp::Node
+{
 public:
-  GpsPublisher(const std::string &node_name = "gps_publisher");
-  ~GpsPublisher();
+    GpsPublisherNode();
+    ~GpsPublisherNode();
 
 private:
-  void timer_callback();
-  void connect_to_vicon();
-  void publish_gps(const std::string &subject_name, const std::string &root_segment_name, const ViconDataStreamSDK::CPP::Output_GetSegmentGlobalTranslation &translation);
+    void timer_callback();
 
-  std::unique_ptr<ViconDataStreamSDK::CPP::Client> vicon_client_;
-  rclcpp::TimerBase::SharedPtr timer_;
-  bool connected_ = false;
-  std::unordered_map<std::string, rclcpp::Publisher<sensor_msgs::msg::NavSatFix>::SharedPtr> subject_publishers_;
+    ViconDataStreamSDK::CPP::Client client_;
+    rclcpp::TimerBase::SharedPtr timer_;
+    std::map<std::string, rclcpp::Publisher<sensor_msgs::msg::NavSatFix>::SharedPtr> subject_publishers_;
 };
+
+#endif // GPS_PUBLISHER_HPP_
+

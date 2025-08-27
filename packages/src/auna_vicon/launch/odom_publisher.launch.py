@@ -14,7 +14,7 @@ def generate_launch_description():
     namespace_arg = DeclareLaunchArgument(
         'namespace',
         default_value='vicon',
-        description='Namespace for the vicon gps publisher'
+        description='Namespace for the vicon odom publisher'
     )
     
     log_level_arg = DeclareLaunchArgument(
@@ -23,10 +23,10 @@ def generate_launch_description():
         description='Log level (DEBUG, INFO, WARN, ERROR)'
     )
     
-    vicon_gps_node = Node(
+    vicon_odom_node = Node(
         package='auna_vicon',
-        executable='gps_publisher_main',
-        name='gps_publisher',
+        executable='odom_publisher_main',
+        name='odom_publisher',
         namespace=LaunchConfiguration('namespace'),
         parameters=[{
             'vicon_host': LaunchConfiguration('vicon_host'),
@@ -41,5 +41,5 @@ def generate_launch_description():
         vicon_host_arg,
         namespace_arg, 
         log_level_arg,
-        vicon_gps_node
+        vicon_odom_node
     ])
